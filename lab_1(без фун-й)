@@ -1,0 +1,163 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+            
+            int rows, cols; // rows-рядки cols-стовпчики
+            int[,] A; // Создание матрицы А
+
+            // Задаем размерность матрице А
+            Console.WriteLine("Введiть кiлькiсть рядкiв i стовпчикiв матрицi:");
+            rows = int.Parse(Console.ReadLine());
+            cols = int.Parse(Console.ReadLine());
+            A = new int[rows, cols];
+
+
+            //Заполнение матрицы А рандомом
+            Random RndGen = new Random();
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    A[i, j] = RndGen.Next(100);
+                }
+            }
+
+
+            //Вывод матрицы А на экран
+            Console.WriteLine("Вмiст матрицi A:");
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    Console.Write("{0, 4}", A[i, j]);
+                }
+                Console.WriteLine();
+            }
+            
+
+            //Найти минимальний элемент и поменять его местами с первым элементом РЯДКА.
+            int min = 9999;
+            int imin = -10;
+
+            int mini = 1; int minj = 1; //mini  / минимальное число
+            int first_elm_i = 1; int first_elm_j = 1; // first_elm_ / первый элемент 
+
+            int temp = 0; // доп.переменная для обмена значений
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    //Нахождение первого элемента
+                    int num_0 = 999; // - Значение первого элемента
+                    if (j == 0)
+                    {
+                        num_0 = A[i, j];
+                        
+                        first_elm_i = i;
+                        first_elm_j = j;
+                    }
+
+                    // Нахождение мин.элемента и индекст мин. элемента
+                    if (min > A[i, j])
+                    {
+                        min = A[i, j];
+                        imin = j;
+
+                        // Запоминание индк. мин. элм. для обмена значений 
+                        mini = i;
+                        minj = j;
+                    }
+                }
+                // Меняет местами первый элемент с минимальный элементом
+                temp = A[first_elm_i, first_elm_j];
+                A[first_elm_i, first_elm_j] = A[mini, minj];
+                A[mini, minj] = temp;
+                
+                // Сброс счётчика 
+                min = 9999;
+                
+            }
+            
+
+            // Вывод матрицы A после перестановки элементов местами
+            Console.WriteLine("");
+            Console.WriteLine("Вмiст матрицi A пiсля свапа елементiв:");
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    Console.Write("{0, 4}", A[i, j]);
+                }
+                Console.WriteLine();
+            }
+
+           
+            // Визначити рядок, в якому перший елемент є найбільшим серед перших елементів інших рядків
+            int first_max_elm = 0; // первый максимальный элемент
+            int arI = 0; // индекс рядка || строки
+            int arJ = 0; // индекс столбца
+            int arI_out = 0; // индекс строки для красивого вывода в консоль
+
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    if(first_max_elm < A[i, j] && j == 0)
+                    {
+                        first_max_elm = A[i, j];
+                        arI = i;
+                        arJ = j;
+
+                        arI_out = i + 1;
+                    }
+                }
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Максимальне число: {0} \nРядок: {1}", first_max_elm, arI_out);
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            
+            // Переписываем элементы сроки в новый массив B
+            int[] B = new int[cols];
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    if(j == arI)
+                    {
+                        B[i] = A[j, i];
+                    }
+                }
+            }
+
+            // Вывод одномерного массива B
+            Console.WriteLine(" ");
+            Console.WriteLine("Вмiст матрицi B:");
+            for (int i = 0; i < B.Length; i++)
+            {
+                Console.Write(B[i] + " ");
+            }
+
+            // Инвертируем массив B
+            Array.Reverse(B);
+
+            // Вывод матрицы B после инвертирования
+            Console.WriteLine("\n");
+            Console.WriteLine("Вмiст матрицi B пiсля iнвертування:");
+            for (int i = 0; i < B.Length; i++)
+            {
+                Console.Write(B[i] + " ");
+            }
+            Console.ReadLine();
+        }
+    }
+}
